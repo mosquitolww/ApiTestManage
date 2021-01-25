@@ -31,7 +31,10 @@ def SendMessage(message, send_address, send_password):
 
     # 发送信息
     # url = 'https://oapi.dingtalk.com/robot/send?access_token=%s&sign=%s&timestamp=%s' \
-    url = '%s&sign=%s&timestamp=%s' % (access_token, signature, timestamp)
+    if signature:
+        url = '%s&sign=%s&timestamp=%s' % (access_token, signature, timestamp)
+    else:
+        url = '%s&timestamp=%s' % (access_token, timestamp)
     headers = {"Content-Type": "application/json ;charset=utf-8 "}
     try:
         response = requests.post(url, headers=headers, json=message, timeout=(3, 60))

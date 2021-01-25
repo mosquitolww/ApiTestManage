@@ -44,7 +44,21 @@ def aps_test(project_id, task_name, case_ids, send_address=None, send_password=N
                       "    查看使用用户名密码：test/test" \
                       % (task_name, duration, teststeps['total'], teststeps['successes'], teststeps['failures'],
                          teststeps['errors'], teststeps['skipped'], start_at)
-        msg = {"msgtype": "text", "text": {"content": result_data}, "at": {"isAtAll": False}}
+
+        result_error = "# **提醒！自动化任务执行失败:**<font color=\"warning\">**%s**</font>\n" \
+                       "#### **请相关同事及时跟进！！**\n" \
+                       "> 成功用例：<font color=\"info\"> %s </font> \n" \
+                       "> 失败用例：<font color=\"warning\"> %s </font> \n" \
+                       "> 错误用例：<font color=\"comment\"> %s </font> \n" \
+                       "> 执行时间：<font color=\"comment\"> %s </font> \n" \
+                       "[测试报告链接](http://172.20.11.210/#/manage/reportShow?reportId=%s) \n" \
+                       % (task_name, teststeps['successes'], teststeps['failures'], teststeps['errors'],
+                          start_at, d.new_report_id)
+
+        if teststeps['failures'] == 0 and teststeps['errors'] == 0:
+            msg = {"msgtype": "text", "text": {"content": result_data}, "at": {"isAtAll": False}}
+        else:
+            msg = {"msgtype": "markdown", "markdown": {"content": result_error}, "at": {"isAtAll": False}}
         SendMessage(msg, send_address, send_password)
     db.session.rollback()  # 把连接放回连接池，不知道为什么定时任务跑完不会自动放回去，导致下次跑的时候，mysql连接超时断开报错
     return d.new_report_id

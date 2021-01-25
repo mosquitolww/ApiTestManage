@@ -34,7 +34,9 @@ def add_test_case_file():
         if status == 1:
             with open('{}{}.txt'.format(TEST_FILE_ADDRESS, _new.id), 'w', encoding='utf-8') as f:
                 f.write(
-                    """{"root":{"data":{"id":"byqb16f7t8o0","created":1574819812654,"text":"中心主题","priority":null,"font-family":"黑体, SimHei","font-size":32,"progress":null},"children":[]},"template":"right","theme":"fresh-blue","version":"1.4.43"}""")
+                    """{"root":{"data":{"id":"byqb16f7t8o0","created":1574819812654,"text":"中心主题","priority":null,
+                    "font-family":"黑体, SimHei","font-size":32,"progress":null},"children":[]},"template":"right",
+                    "theme":"fresh-blue","version":"1.4.43"}""")
         return jsonify({'msg': '新建成功', 'status': 1, 'id': _new.id, 'higher_id': _new.higher_id, })
 
 
